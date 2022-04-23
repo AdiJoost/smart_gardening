@@ -7,7 +7,9 @@ app = Flask(__name__)
 @app.route('/', methods=['GET'])
 def home():
     pump_21 = Pump(21)
-    pump_21.activate_pump(10)
+    pump_20 = Pump (20)
+    pump_21.activate_pump(5)
+    pump_20.activate_pump(5)
     return "Hello world"
 
 
