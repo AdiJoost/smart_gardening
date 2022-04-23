@@ -1,10 +1,13 @@
 from flask import Flask
+from pump import Pump
 
 app = Flask(__name__)
 
 
 @app.route('/', methods=['GET'])
 def home():
+    pump_21 = Pump(21)
+    pump_21.activate_pump(10)
     return "Hello world"
 
 
