@@ -1,3 +1,3 @@
 flask
-Flask-RESTful>0.3.8
-FLASK-SQLAlchemy
+flask-RESTful>0.3.8
+flask_sqlalchemy
