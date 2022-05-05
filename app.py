@@ -7,6 +7,9 @@ from resources.res_pump import Res_pump
 
 
 app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///data.db"
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.secret_key = "LolHAHAHA"
 pin_list = (20, 21, 26, 19, 13, 6, 5, 12)
 all_pumps = []
 api = Api(app)
