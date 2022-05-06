@@ -21,3 +21,11 @@ class Res_pump(Resource):
         if my_pump:
             my_pump.deleteMe()
         return create_response("pump deleted", 200)
+    
+class Res_pumps(Resource):
+    def get(self):
+        all_pumps = Pump_model.get_all()
+        return_value = {}
+        for pump in all_pumps:
+            return_value[pump.id] = pump.to_json()
+        return create_response (return_value, 200)

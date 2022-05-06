@@ -25,3 +25,7 @@ class Pump_model(db.Model):
     @classmethod
     def get_pump(cls, _id: int):
         return cls.query.filter_by(id=_id).first()
+    
+    @classmethod
+    def get_all (cls):
+        return cls.query.all()

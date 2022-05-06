@@ -3,7 +3,7 @@ from flask_restful import Api
 from db import db
 #when run on Pi -make sure to uncomment the RPI.GPIO lib in Pump-class
 from pump import Pump
-from resources.res_pump import Res_pump
+from resources.res_pump import Res_pump, Res_pumps
 from pump_controller import Pump_controller
 
 
@@ -26,6 +26,7 @@ def home():
     return "Hello world"
 
 api.add_resource(Res_pump, "/pump/<int:_id>")
+api.add_resource(Res_pumps, "/pumps")
 
 if __name__ == "__main__":
     #create instance of Pump_controller
