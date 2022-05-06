@@ -4,6 +4,7 @@ from db import db
 #when run on Pi -make sure to uncomment the RPI.GPIO lib in Pump-class
 from pump import Pump
 from resources.res_pump import Res_pump
+from pump_controller import Pump_controller
 
 
 app = Flask(__name__)
@@ -27,9 +28,13 @@ def home():
 api.add_resource(Res_pump, "/pump/<int:_id>")
 
 if __name__ == "__main__":
+    #create instance of Pump_controller
+    pc = Pump_controller()
     for pin in pin_list:
         print(f"Going to add pump_pin {pin}")
         all_pumps.append(Pump(pin))
         print("Pin added")
+    #setup DB
     db.init_app(app)
+    #start app
     app.run(port=5000, host="0.0.0.0", debug=True)
