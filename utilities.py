@@ -1,4 +1,4 @@
-#from flask_restful import reqparse
+from flask_restful import reqparse
 from flask import make_response, jsonify
 
  
@@ -13,29 +13,12 @@ def create_response (body, status):
 
 
 
-"""
+
 #Below are all methods to create a parser for a specific Request
-def employee_post_parser():
+def order_put_parser():
     parser = reqparse.RequestParser()
-    parser.add_argument("monday",
-                        type=int,
-                        required=True,
-                        help="This field cannot be left blank")
-    parser.add_argument("tuesday",
-                        type=int,
-                        required=True,
-                        help="This field cannot be left blank")
-    parser.add_argument("wednesday",
-                        type=int,
-                        required=True,
-                        help="This field cannot be left blank")
-    parser.add_argument("thursday",
-                        type=int,
-                        required=True,
-                        help="This field cannot be left blank")
-    parser.add_argument("friday",
+    parser.add_argument("duration",
                         type=int,
                         required=True,
                         help="This field cannot be left blank")
     return parser
-"""

@@ -18,6 +18,8 @@ api = Api(app)
 @app.before_first_request
 def create_table():
     db.create_all()
+    #create instance of Pump_controller
+    Pump_controller()
 
 @app.route('/', methods=['GET'])
 def home():
@@ -29,13 +31,13 @@ api.add_resource(Res_pump, "/pump/<int:_id>")
 api.add_resource(Res_pumps, "/pumps")
 
 if __name__ == "__main__":
-    #create instance of Pump_controller
-    pc = Pump_controller()
     for pin in pin_list:
         print(f"Going to add pump_pin {pin}")
         all_pumps.append(Pump(pin))
         print("Pin added")
     #setup DB
     db.init_app(app)
+    
     #start app
     app.run(port=5000, host="0.0.0.0", debug=True)
+    
