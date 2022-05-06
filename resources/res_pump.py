@@ -26,7 +26,7 @@ class Res_pump(Resource):
     def put(self, _id):
         my_pump = Pump_model.get_pump(_id)
         if not my_pump:
-            return create_response({"message": "No Pump with id: {_id} exists"},
+            return create_response({"message": f"No Pump with id: {_id} exists"},
                                    404)
         
         return_value = {}
