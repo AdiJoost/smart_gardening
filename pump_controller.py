@@ -10,6 +10,8 @@ pump-objects and handles their activation
 
 from models.pump_model import Pump_model
 from pump import Pump
+import threading
+import time
 
 class Pump_controller():
     __instance = None
@@ -43,12 +45,18 @@ class Pump_controller():
     def add_order(self, pump_pin, duration):
         self.queue.append((pump_pin, duration))
         
+    def start_deamon_thread(self):
+        self.deamon_thread = threading.Thread(target=self.run_queue)
+        self.deamon_thread.start()
             
-    def run_queue (self):
-        while len(self.queue) != 0:
-            pump_order = self.queue.pop(0)
-            self.run(*pump_order)
-            
+    def run_queue (self, intervall=5):
+        while True:
+            while len(self.queue) != 0:
+                pump_order = self.queue.pop(0)
+                self.run(*pump_order)
+        time.sleep(intervall)
+        
+        
     def run(self, pump_id, duration = 10):
         self.pump_list[pump_id].activate_pump(duration)
         

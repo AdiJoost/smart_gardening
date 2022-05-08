@@ -19,7 +19,8 @@ api = Api(app)
 def create_table():
     db.create_all()
     #create instance of Pump_controller
-    Pump_controller()
+    pc = Pump_controller()
+    pc.start_deamon_thread()
 
 @app.route('/', methods=['GET'])
 def home():

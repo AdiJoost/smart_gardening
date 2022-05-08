@@ -39,7 +39,7 @@ class Res_pump(Resource):
         pc.add_order(_id, data["duration"])
         return_value["queue_middle"] = str(pc.queue)
         
-        pc.run_queue()
+        #pc.run_queue()
         return_value["queue_after"] = str(pc.queue)
         
         return create_response (return_value, 200)
