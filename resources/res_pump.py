@@ -15,6 +15,8 @@ class Res_pump(Resource):
     def post (self, _id):
         my_pump = Pump_model(_id)
         my_pump.save()
+        pc = Pump_controller.get_instance()
+        pc.add_pump(my_pump.id, my_pump.pump_pin)
         return create_response(my_pump.to_json() ,201)
     
     def delete (self, _id):

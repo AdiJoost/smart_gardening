@@ -34,13 +34,18 @@ class Pump_controller():
         all_pumps = Pump_model.get_all()
         for pump in all_pumps:
             self.pump_list[pump.id] = Pump(pump.pump_pin)
+    
+    def add_pump(self, pump_id, pump_pin):
+        if pump_id in self.pump_list:
+            return -1
+        self.pump_list[pump_id] = Pump(pump_pin)
             
     def add_order(self, pump_pin, duration):
         self.queue.append((pump_pin, duration))
         
             
     def run_queue (self):
-        while len(self.queue) is not 0:
+        while len(self.queue) != 0:
             pump_order = self.queue.pop(0)
             self.run(*pump_order)
             
