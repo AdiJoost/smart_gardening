@@ -52,10 +52,10 @@ class Pump_controller():
             return -1
         self.pump_list[pump_id] = Pump(pump_pin)
             
-    def add_order(self, pump_pin, duration):
+    def add_order(self, pump_id, duration):
         """adds an order to the list for the pump_controller to 
         execute."""
-        self.queue.append((pump_pin, duration))
+        self.queue.append((pump_id, duration))
         
     def start_deamon_thread(self):
         """starts deamon_thread to execute orders in self.queue. Deamon will

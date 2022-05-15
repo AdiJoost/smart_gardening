@@ -32,10 +32,7 @@ api.add_resource(Res_pump, "/pump/<int:_id>")
 api.add_resource(Res_pumps, "/pumps")
 
 if __name__ == "__main__":
-    for pin in pin_list:
-        print(f"Going to add pump_pin {pin}")
-        all_pumps.append(Pump(pin))
-        print("Pin added")
+    
     #setup DB
     db.init_app(app)
     
