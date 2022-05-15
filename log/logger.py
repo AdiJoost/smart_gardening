@@ -7,6 +7,8 @@ Created on Sun May 15 11:28:36 2022
 import os.path
 from datetime import date
 
+
+#This is a simple log system - it is not thread-safe!
 def log_entry(prefix: str, message: str, file="main_log.txt"):
     entry = f"[{prefix}] {message}"
     if not os.path.exists(file):
@@ -17,7 +19,3 @@ def log_entry(prefix: str, message: str, file="main_log.txt"):
         f.write(f"{entry} -- {date.today().isoformat()}\n")
         
         
-
-
-log_entry("logger", "I just try to make an entry")
-log_entry("cdlogger", "I just try to make an other entry")
