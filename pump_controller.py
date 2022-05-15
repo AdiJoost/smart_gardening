@@ -18,6 +18,7 @@ from models.pump_model import Pump_model
 from pump import Pump
 import threading
 import time
+from log.logger import Logger
 
 class Pump_controller():
     __instance = None
@@ -72,6 +73,12 @@ class Pump_controller():
         
         
     def run(self, pump_id, duration = 10):
-        self.pump_list[pump_id].activate_pump(duration)
-        
+        try:
+            self.pump_list[pump_id].activate_pump(duration)
+            Logger.log(__name__, f"Pump: {pump_id} shot for "\
+                       f"{duration} seconds", "pump_log.txt")
+        except KeyError as e:
+            Logger.log(__name__, f"KeyError: no Pump with id: {e}",
+                       file="error_log.txt")
+         
     

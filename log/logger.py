@@ -7,15 +7,22 @@ Created on Sun May 15 11:28:36 2022
 import os.path
 from datetime import date
 
-
-#This is a simple log system - it is not thread-safe!
-def log_entry(prefix: str, message: str, file="main_log.txt"):
-    entry = f"[{prefix}] {message}"
-    if not os.path.exists(file):
-        with open(file, "w", encoding=("UTF-8")) as f:
-            f.write("Log-File for smart-gardening-system. Created:"\
-                    f" {date.today().isoformat()}\n\n")
-    with open(file, "a", encoding=("UTF-8")) as f:
-        f.write(f"{entry} -- {date.today().isoformat()}\n")
+class Logger():
+    def __init__(self):
+        pass
+    
+    #This is a simple log system - it is not thread-safe!
+    @classmethod
+    def log(cls,prefix: str, message: str, file="main_log.txt"):
+        entry = f"[{prefix}] {message}"
+        #create correct path to file
+        my_path = os.getcwd().split("smart_gardening", 1)[0]
+        my_path = os.path.join(my_path, "smart_gardening", "log", file)
         
-        
+        #write to file
+        if not os.path.exists(my_path):
+            with open(my_path, "w", encoding=("UTF-8")) as f:
+                f.write("Log-File for smart-gardening-system. Created:"\
+                        f" {date.today().isoformat()}\n\n")
+        with open(my_path, "a", encoding=("UTF-8")) as f:
+            f.write(f"{entry} -- {date.today().isoformat()}\n")

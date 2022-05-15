@@ -2,7 +2,6 @@ from flask import Flask
 from flask_restful import Api
 from db import db
 #when run on Pi -make sure to uncomment the RPI.GPIO lib in Pump-class
-from pump import Pump
 from resources.res_pump import Res_pump, Res_pumps
 from pump_controller import Pump_controller
 
@@ -20,6 +19,7 @@ def create_table():
     db.create_all()
     #create instance of Pump_controller
     pc = Pump_controller()
+    pc.run(112)
     pc.start_deamon_thread()
 
 @app.route('/', methods=['GET'])
