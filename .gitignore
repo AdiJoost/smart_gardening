@@ -3,7 +3,11 @@ __pycache__/
 *.py[cod]
 *$py.class
 *.db
+
+#logs from app
 main_log.txt
+error_log.txt
+pump_log.txt
 
 # C extensions
 *.so
