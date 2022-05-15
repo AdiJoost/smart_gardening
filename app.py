@@ -3,6 +3,7 @@ from flask_restful import Api
 from db import db
 #when run on Pi -make sure to uncomment the RPI.GPIO lib in Pump-class
 from resources.res_pump import Res_pump, Res_pumps
+from resources.res_order import Res_order, Res_orders
 from pump_controller import Pump_controller
 
 
@@ -19,7 +20,6 @@ def create_table():
     db.create_all()
     #create instance of Pump_controller
     pc = Pump_controller()
-    pc.run(112)
     pc.start_deamon_thread()
 
 @app.route('/', methods=['GET'])
@@ -30,6 +30,8 @@ def home():
 
 api.add_resource(Res_pump, "/pump/<int:_id>")
 api.add_resource(Res_pumps, "/pumps")
+api.add_resource(Res_order, "/order")
+api.add_resource(Res_orders, "/orders")
 
 if __name__ == "__main__":
     

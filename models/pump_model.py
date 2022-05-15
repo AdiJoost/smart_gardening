@@ -5,6 +5,7 @@ class Pump_model(db.Model):
     __tablename__ = 'pumps'
     id = db.Column(db.Integer, primary_key=True)
     pump_pin = db.Column(db.Integer)
+    orders = db.relationship('Order_model')
     
     def __init__(self, pump_pin: int):
         self.pump_pin = pump_pin
