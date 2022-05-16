@@ -40,8 +40,13 @@ class Order_model(db.Model):
         db.session.commit()
     
     def place(self):
+        """place will put the order in queue, however, if the app
+        crashes while order is in queue, the order is marked complete,
+        but never actually shot."""
         pc = Pump_controller.get_instance()
         pc.add_order(self.pump_id, self.duration)
+        self.is_done = True
+        self.save()
         
     @classmethod
     def get_order(cls, _id: int):
