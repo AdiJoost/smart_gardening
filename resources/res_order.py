@@ -4,22 +4,36 @@ from models.order_model import Order_model
 from utilities import create_response, order_put_parser, order_post_parser,\
 get_datetime
 from pump_controller import Pump_controller
+from log.logger import Logger
 
 
 class Res_order(Resource):
     def get(self):
         pass
     
-    #on the post method _id is the pin to setup the Pump
     def post (self):
+        return_value = {}
         parser = order_post_parser()
         data = parser.parse_args()
-        my_datetime = get_datetime(data["time_date"])
+        if(data["time_date"]):
+            my_datetime, error_code = get_datetime(data["time_date"])
+            if error_code == -1:
+                return_value["message"]= "Your date-format is not in"\
+                    "correct form. Please use format yyyy-MM-dd-hh-mm-ss"\
+                    " for the date. If you remove time_date from your body,"\
+                    " the application will us today as date"
+                return_value["order"]= None
+                return create_response(return_value, 400)
+        else:
+            my_datetime = datetime.today()
         order = Order_model(data["pump_id"],
                             data["duration"],
                             execution_date=my_datetime)
         order.save()
-        return create_response(order.to_json(), 200)
+        order.place()
+        return_value["message"] = "Order created"
+        return_value["order"] = order.to_json()
+        return create_response(return_value, 200)
     
     def delete (self):
         pass
@@ -47,4 +61,5 @@ class Res_orders(Resource):
         return_value = {}
         for order in all_orders:
             return_value[order.id] = order.to_json()
+        Logger.log(__name__, str(return_value))
         return create_response (return_value, 200)

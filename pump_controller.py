@@ -53,7 +53,7 @@ class Pump_controller():
             return -1
         self.pump_list[pump_id] = Pump(pump_pin)
             
-    def add_order(self, pump_id, duration):
+    def add_order(self, pump_id, duration, order=None):
         """adds an order to the list for the pump_controller to 
         execute."""
         self.queue.append((pump_id, duration))

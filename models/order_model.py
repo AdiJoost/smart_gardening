@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from db import db
 from datetime import datetime
+from pump_controller import Pump_controller
 
 class Order_model(db.Model):
     
@@ -37,6 +38,10 @@ class Order_model(db.Model):
     def deleteMe(self):
         db.session.delete(self)
         db.session.commit()
+    
+    def place(self):
+        pc = Pump_controller.get_instance()
+        pc.add_order(self.pump_id, self.duration)
         
     @classmethod
     def get_order(cls, _id: int):

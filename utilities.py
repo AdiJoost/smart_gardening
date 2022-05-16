@@ -11,15 +11,23 @@ def create_response (body, status):
     response.headers.add('Access-Control-Allow-Origin', 'http://127.0.0.1:5000')
     return response
 
-def get_datetime(input_string: str) -> datetime:
-    splitted = input_string.split("-")
-    year = int(splitted[0])
-    month = int(splitted[1])
-    day = int(splitted[2])
-    hour = int(splitted[3])
-    minute = int(splitted[4])
-    seconds = int(splitted[5])
-    return datetime(year, month, day, hour, minute, seconds)
+
+def get_datetime(input_string: str) -> tuple:
+    """will turn a string with format 
+    yyyy-MM-dd-hh-mm-ss to a datetime object.
+    returns a tuple with datetimeobject and a number.
+    0=successfull, -1=failed (then datetimeobject is today())"""
+    try:
+        splitted = input_string.split("-")
+        year = int(splitted[0])
+        month = int(splitted[1])
+        day = int(splitted[2])
+        hour = int(splitted[3])
+        minute = int(splitted[4])
+        seconds = int(splitted[5])
+        return (datetime(year, month, day, hour, minute, seconds), 0)
+    except Exception:
+      return (datetime.today(), -1)
 
 
 
