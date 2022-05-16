@@ -18,7 +18,9 @@ from models.pump_model import Pump_model
 from pump import Pump
 import threading
 import time
+from datetime import datetime
 from log.logger import Logger
+from models.order_model import Order_model
 
 class Pump_controller():
     __instance = None
@@ -65,11 +67,15 @@ class Pump_controller():
         self.deamon_thread.start()
             
     def run_queue (self, intervall=5):
+        Logger.log(__name__, "Queue started")
         while True:
+            self.get_new_orders()
             while len(self.queue) != 0:
                 pump_order = self.queue.pop(0)
                 self.run(*pump_order)
-        time.sleep(intervall)
+            time.sleep(intervall)
+            
+        
         
         
     def run(self, pump_id, duration = 10):
@@ -80,5 +86,15 @@ class Pump_controller():
         except KeyError as e:
             Logger.log(__name__, f"KeyError: no Pump with id: {e}",
                        file="error_log.txt")
+            
+    def get_new_orders(self):
+        Logger.log(__name__, "looking for new orders")
+        orders = Order_model.get_open_orders()
+        Logger.log(__name__, str(orders))
+        now = datetime.today()
+        for order in orders:
+            if order.execution_date < now:
+                self.add_order(order.pump_id, order.duration)
+                order.done()
          
     

@@ -30,7 +30,7 @@ class Res_order(Resource):
                             data["duration"],
                             execution_date=my_datetime)
         order.save()
-        order.place()
+        #order.place()
         return_value["message"] = "Order created"
         return_value["order"] = order.to_json()
         return create_response(return_value, 200)

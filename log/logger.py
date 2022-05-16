@@ -5,7 +5,7 @@ Created on Sun May 15 11:28:36 2022
 @author: AdiJo
 """
 import os.path
-from datetime import date
+from datetime import datetime
 
 class Logger():
     def __init__(self):
@@ -23,6 +23,6 @@ class Logger():
         if not os.path.exists(my_path):
             with open(my_path, "w", encoding=("UTF-8")) as f:
                 f.write("Log-File for smart-gardening-system. Created:"\
-                        f" {date.today().isoformat()}\n\n")
+                        f" {datetime.today().isoformat()}\n\n")
         with open(my_path, "a", encoding=("UTF-8")) as f:
-            f.write(f"{entry} -- {date.today().isoformat()}\n")
+            f.write(f"{entry} -- {datetime.today().isoformat()}\n")

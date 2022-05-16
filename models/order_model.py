@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 from db import db
 from datetime import datetime
-from pump_controller import Pump_controller
+from log.logger import Logger
+#from pump_controller import Pump_controller
 
 class Order_model(db.Model):
     
@@ -39,14 +40,19 @@ class Order_model(db.Model):
         db.session.delete(self)
         db.session.commit()
     
+    def done(self):
+        self.is_done = True
+        self.save()
+        
+        """
     def place(self):
-        """place will put the order in queue, however, if the app
+        ""place will put the order in queue, however, if the app
         crashes while order is in queue, the order is marked complete,
-        but never actually shot."""
+        but never actually shot.""
         pc = Pump_controller.get_instance()
         pc.add_order(self.pump_id, self.duration)
         self.is_done = True
-        self.save()
+        self.save()"""
         
     @classmethod
     def get_order(cls, _id: int):
@@ -55,3 +61,9 @@ class Order_model(db.Model):
     @classmethod
     def get_all (cls):
         return cls.query.all()
+    
+    #todo not returning objects but rather json file (working on other thread)
+    @classmethod
+    def get_open_orders(cls):
+        Logger.log(__name__, "looking for open orders in db")
+        return cls.query.filter_by(is_done=False).all()
