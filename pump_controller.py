@@ -60,20 +60,29 @@ class Pump_controller():
         execute."""
         self.queue.append((pump_id, duration))
         
-    def start_deamon_thread(self):
+    def start_deamon_thread(self, app):
         """starts deamon_thread to execute orders in self.queue. Deamon will
         check after given intervall for new orders and executes them"""
-        self.deamon_thread = threading.Thread(target=self.run_queue)
-        self.deamon_thread.start()
+        try:
+            Logger.log(__name__, "setup Deamon")
+            self.deamon_thread = threading.Thread(target=self.run_queue,
+                                                  args=(app, 10))
+            self.deamon_thread.start()
+            Logger.log(__name__, "Deamon is running")
+        except Exception as e:
+            Logger.log(__name__, str(e), "error_log.txt")
             
-    def run_queue (self, intervall=5):
+    def run_queue (self, app, intervall):
         Logger.log(__name__, "Queue started")
-        while True:
-            self.get_new_orders()
-            while len(self.queue) != 0:
-                pump_order = self.queue.pop(0)
-                self.run(*pump_order)
-            time.sleep(intervall)
+        try:
+            while True:
+                self.get_new_orders(app)
+                while len(self.queue) != 0:
+                    pump_order = self.queue.pop(0)
+                    self.run(*pump_order)
+                time.sleep(intervall)
+        except Exception as e:
+            Logger.log(__name__, str(e), "error_log.txt")
             
         
         
@@ -87,14 +96,10 @@ class Pump_controller():
             Logger.log(__name__, f"KeyError: no Pump with id: {e}",
                        file="error_log.txt")
             
-    def get_new_orders(self):
+    def get_new_orders(self, app):
         Logger.log(__name__, "looking for new orders")
-        orders = Order_model.get_open_orders()
+        orders = Order_model.get_open_orders(app)
         Logger.log(__name__, str(orders))
-        now = datetime.today()
-        for order in orders:
-            if order.execution_date < now:
-                self.add_order(order.pump_id, order.duration)
-                order.done()
+        
          
     

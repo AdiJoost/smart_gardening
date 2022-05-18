@@ -62,8 +62,22 @@ class Order_model(db.Model):
     def get_all (cls):
         return cls.query.all()
     
-    #todo not returning objects but rather json file (working on other thread)
+    #todo not returning objects but rather list file (working on other thread)
     @classmethod
-    def get_open_orders(cls):
-        Logger.log(__name__, "looking for open orders in db")
-        return cls.query.filter_by(is_done=False).all()
+    def get_open_orders(cls, app):
+        try:
+            with app.app_context():
+                orders = cls.query.filter_by(is_done=False).all()
+                now = datetime.today()
+                return_value = [order
+                                for order in orders
+                                if order.execution_date < now]
+                
+                
+        except Exception as e:
+            Logger.log(__name__, str(e), "error_log.txt")
+            return_value = None
+        finally:    
+            return return_value
+        
+            
