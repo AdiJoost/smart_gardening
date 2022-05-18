@@ -40,9 +40,10 @@ class Order_model(db.Model):
         db.session.delete(self)
         db.session.commit()
     
-    def done(self):
-        self.is_done = True
-        self.save()
+    def done(self, app):
+        with app.app_context():
+            self.is_done = True
+            self.save()
         
         """
     def place(self):

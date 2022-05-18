@@ -55,10 +55,10 @@ class Pump_controller():
             return -1
         self.pump_list[pump_id] = Pump(pump_pin)
             
-    def add_order(self, pump_id, duration, order=None):
+    def add_order(self, order):
         """adds an order to the list for the pump_controller to 
         execute."""
-        self.queue.append((pump_id, duration))
+        self.queue.append(order)
         
     def start_deamon_thread(self, app):
         """starts deamon_thread to execute orders in self.queue. Deamon will
@@ -78,8 +78,9 @@ class Pump_controller():
             while True:
                 self.get_new_orders(app)
                 while len(self.queue) != 0:
-                    pump_order = self.queue.pop(0)
-                    self.run(*pump_order)
+                    order = self.queue.pop(0)
+                    self.run(order.pump_id, order.duration)
+                    order.done(app)
                 time.sleep(intervall)
         except Exception as e:
             Logger.log(__name__, str(e), "error_log.txt")
@@ -99,6 +100,8 @@ class Pump_controller():
     def get_new_orders(self, app):
         Logger.log(__name__, "looking for new orders")
         orders = Order_model.get_open_orders(app)
+        for order in orders:
+            self.add_order(order)
         Logger.log(__name__, str(orders))
         
          
