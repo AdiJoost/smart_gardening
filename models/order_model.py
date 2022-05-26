@@ -81,4 +81,10 @@ class Order_model(db.Model):
         finally:    
             return return_value
         
+    @classmethod
+    def deamon_create(cls, app, pump_id, duration, dt):
+        with app.app_context():
+            order = Order_model(pump_id, duration, execution_date=dt)
+            order.save()
+        
             

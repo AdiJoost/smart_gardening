@@ -66,3 +66,9 @@ class Daily_order_model(db.Model):
     def get_all (cls):
         return cls.query.all()
     
+    @classmethod
+    def get_deamon_orders(cls, app):
+        
+        with app.app_context():
+            return cls.query.all()
+                

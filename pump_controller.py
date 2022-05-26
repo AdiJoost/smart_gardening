@@ -21,6 +21,7 @@ import time
 from datetime import datetime
 from log.logger import Logger
 from models.order_model import Order_model
+from models.daily_order_model import Daily_order_model
 
 class Pump_controller():
     __instance = None
@@ -77,11 +78,23 @@ class Pump_controller():
         Logger.log(__name__, "Queue started")
         try:
             while True:
+                
+                if not self.check_daily_pumps and datetime.now().hour == 0:
+                    try:
+                        self.get_todays_orders(app)
+                        self.check_daily_pumps = True
+                    except Exception as e:
+                        Logger.log(__name__, str(e), "error_log.txt")
+                if self.check_daily_pumps and datetime.now().hour > 0:
+                    self.check_daily_pumps = False
+                    
                 self.get_new_orders(app)
                 while len(self.queue) != 0:
                     order = self.queue.pop(0)
                     self.run(order.pump_id, order.duration)
                     order.done(app)
+                    
+                #sleep for a few seconds
                 time.sleep(intervall)
         except Exception as e:
             Logger.log(__name__, str(e), "error_log.txt")
@@ -103,6 +116,22 @@ class Pump_controller():
         for order in orders:
             self.add_order(order)
         #Logger.log(__name__, str(orders))
+        
+    def get_todays_orders(self, app):
+        daily_orders = Daily_order_model.get_deamon_orders(app)
+        Logger.log(__name__, "Got all daily orders")
+        counter = 0
+        for do in daily_orders:
+            dt1 = datetime.now()
+            dt1.replace(hour = do.hour,
+                        minute=do.minute,
+                        second=0,
+                        microsecond=0)
+            Order_model.deamon_create(app, do.pump_id, do.duration, dt1)
+        
+            counter += 1
+        Logger.log(__name__, f"Daily orders checked. {counter} orders created")
+            
         
          
     
