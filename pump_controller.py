@@ -98,7 +98,6 @@ class Pump_controller():
                        file="error_log.txt")
             
     def get_new_orders(self, app):
-        Logger.log(__name__, "looking for new orders")
         orders = Order_model.get_open_orders(app)
         for order in orders:
             self.add_order(order)

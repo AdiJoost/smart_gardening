@@ -4,6 +4,7 @@ from db import db
 #when run on Pi -make sure to uncomment the RPI.GPIO lib in Pump-class
 from resources.res_pump import Res_pump, Res_pumps
 from resources.res_order import Res_order, Res_orders
+from resources.res_daily_order import Res_daily_order, Res_daily_orders
 from pump_controller import Pump_controller
 from log.logger import Logger
 
@@ -35,6 +36,8 @@ api.add_resource(Res_pump, "/pump/<int:_id>")
 api.add_resource(Res_pumps, "/pumps")
 api.add_resource(Res_order, "/order")
 api.add_resource(Res_orders, "/orders")
+api.add_resource(Res_daily_order, "/daily_order")
+api.add_resource(Res_daily_orders, "/daily_orders")
 
 if __name__ == "__main__":
     Logger.log(__name__, "\n*****************************\n"\

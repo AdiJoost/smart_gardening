@@ -32,6 +32,8 @@ def get_datetime(input_string: str) -> tuple:
 
 
 #Below are all methods to create a parser for a specific Request
+
+#order_resource
 def order_put_parser():
     parser = reqparse.RequestParser()
     parser.add_argument("duration",
@@ -55,4 +57,26 @@ def order_post_parser():
                         required=False,
                         help="This field has to be formatet like"\
                             "yyyy-MM-dd-hh-mm-ss")
+    return parser
+
+#daily_order_resource
+
+def daily_order_post_parser():
+    parser = reqparse.RequestParser()
+    parser.add_argument("pump_id",
+                        type=int,
+                        required=True,
+                        help="This field cannot be left blank")
+    parser.add_argument("duration",
+                        type=int,
+                        required=True,
+                        help="This field cannot be left blank")
+    parser.add_argument("hour",
+                        type=int,
+                        required=True,
+                        help="This field cannot left blank")
+    parser.add_argument("minute",
+                        type=int,
+                        required=True,
+                        help="This field cannot left blank")
     return parser
