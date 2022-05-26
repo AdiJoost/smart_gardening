@@ -61,5 +61,4 @@ class Res_orders(Resource):
         return_value = {}
         for order in all_orders:
             return_value[order.id] = order.to_json()
-        Logger.log(__name__, str(return_value))
         return create_response (return_value, 200)

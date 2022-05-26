@@ -41,6 +41,7 @@ class Pump_controller():
             Pump_controller.__instance = self
             self.get_pumps()
             self.queue = []
+            self.check_daily_pumps = False
             
     def get_pumps(self):
         """loads all pumps from database"""
@@ -101,7 +102,7 @@ class Pump_controller():
         orders = Order_model.get_open_orders(app)
         for order in orders:
             self.add_order(order)
-        Logger.log(__name__, str(orders))
+        #Logger.log(__name__, str(orders))
         
          
     
