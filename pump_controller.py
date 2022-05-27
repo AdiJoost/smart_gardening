@@ -79,13 +79,13 @@ class Pump_controller():
         try:
             while True:
                 
-                if not self.check_daily_pumps and datetime.now().hour == 0:
+                if not self.check_daily_pumps and datetime.now().hour == 11:
                     try:
                         self.get_todays_orders(app)
                         self.check_daily_pumps = True
                     except Exception as e:
                         Logger.log(__name__, str(e), "error_log.txt")
-                if self.check_daily_pumps and datetime.now().hour > 0:
+                if self.check_daily_pumps and datetime.now().hour > 11:
                     self.check_daily_pumps = False
                     
                 self.get_new_orders(app)
@@ -123,11 +123,11 @@ class Pump_controller():
         counter = 0
         for do in daily_orders:
             dt1 = datetime.now()
-            dt1.replace(hour = do.hour,
+            dt2 = dt1.replace(hour = do.hour,
                         minute=do.minute,
                         second=0,
                         microsecond=0)
-            Order_model.deamon_create(app, do.pump_id, do.duration, dt1)
+            Order_model.deamon_create(app, do.pump_id, do.duration, dt2)
         
             counter += 1
         Logger.log(__name__, f"Daily orders checked. {counter} orders created")

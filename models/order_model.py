@@ -45,15 +45,6 @@ class Order_model(db.Model):
             self.is_done = True
             self.save()
         
-        """
-    def place(self):
-        ""place will put the order in queue, however, if the app
-        crashes while order is in queue, the order is marked complete,
-        but never actually shot.""
-        pc = Pump_controller.get_instance()
-        pc.add_order(self.pump_id, self.duration)
-        self.is_done = True
-        self.save()"""
         
     @classmethod
     def get_order(cls, _id: int):
@@ -85,6 +76,8 @@ class Order_model(db.Model):
     def deamon_create(cls, app, pump_id, duration, dt):
         with app.app_context():
             order = Order_model(pump_id, duration, execution_date=dt)
+            Logger.log(__name__, f"created order: {order}"\
+                       f"\nargs: ({pump_id}, {duration}, {dt})")
             order.save()
         
             
