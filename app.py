@@ -1,5 +1,6 @@
-from flask import Flask
+from flask import Flask, render_template
 from flask_restful import Api
+from flask_cors import CORS
 from db import db
 #when run on Pi -make sure to uncomment the RPI.GPIO lib in Pump-class
 from resources.res_pump import Res_pump, Res_pumps
@@ -10,6 +11,7 @@ from log.logger import Logger
 
 
 app = Flask(__name__)
+CORS(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///data.db"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.secret_key = "LolHAHAHA"
@@ -28,9 +30,7 @@ def create_table():
 
 @app.route('/', methods=['GET'])
 def home():
-    for my_pump in all_pumps:
-        my_pump.activate_pump(3)
-    return "Hello world"
+    return render_template("index.html")
 
 api.add_resource(Res_pump, "/pump/<int:_id>")
 api.add_resource(Res_pumps, "/pumps")
