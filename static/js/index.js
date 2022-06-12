@@ -4,5 +4,6 @@ console.log("loaded")
 
 jQuery(document).ready(function($){
 	$("#pumpContainer").pumpDispaly();
+	$("#headNav").navibar();
 
 	});
